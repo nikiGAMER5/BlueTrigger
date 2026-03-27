@@ -1,0 +1,165 @@
+# ui/banner.py - Blue Trigger ASCII Art & Animations
+
+import time
+import sys
+import os
+import random
+from ui.colors import Colors
+
+LOGO = r"""
+██████╗ ██╗     ██╗   ██╗███████╗
+██╔══██╗██║     ██║   ██║██╔════╝
+██████╔╝██║     ██║   ██║█████╗  
+██╔══██╗██║     ██║   ██║██╔══╝  
+██████╔╝███████╗╚██████╔╝███████╗
+╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝
+████████╗██████╗ ██╗ ██████╗  ██████╗ ███████╗██████╗ 
+╚══██╔══╝██╔══██╗██║██╔════╝ ██╔════╝ ██╔════╝██╔══██╗
+   ██║   ██████╔╝██║██║  ███╗██║  ███╗█████╗  ██████╔╝
+   ██║   ██╔══██╗██║██║   ██║██║   ██║██╔══╝  ██╔══██╗
+   ██║   ██║  ██║██║╚██████╔╝╚██████╔╝███████╗██║  ██║
+   ╚═╝   ╚═╝  ╚═╝╚═╝ ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝
+"""
+
+LOGO_SMALL = r"""
+ /$$$$$$$  /$$                        /$$$$$$$$        /$$                                             
+| $$__  $$| $$                       |__  $$__/       |__/                                             
+| $$  \ $$| $$ /$$   /$$  /$$$$$$       | $$  /$$$$$$  /$$  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$     
+| $$$$$$$ | $$| $$  | $$ /$$__  $$      | $$ /$$__  $$| $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$    
+| $$__  $$| $$| $$  | $$| $$$$$$$$      | $$| $$  \__/| $$| $$  \ $$| $$  \ $$| $$$$$$$$| $$  \__/    
+| $$  \ $$| $$| $$  | $$| $$_____/      | $$| $$      | $$| $$  | $$| $$  | $$| $$_____/| $$          
+| $$$$$$$/| $$|  $$$$$$/|  $$$$$$$      | $$| $$      | $$|  $$$$$$$|  $$$$$$$|  $$$$$$$| $$          
+|_______/ |__/ \______/  \_______/      |__/|__/      |__/ \____  $$ \____  $$ \_______/|__/          
+                                                           /$$  \ $$ /$$  \ $$                         
+                                                          |  $$$$$$/|  $$$$$$/                         
+                                                           \______/  \______/                          
+"""
+
+MINI_LOGO = [
+    "  ██████╗ ██╗     ██╗   ██╗███████╗    ████████╗██████╗ ██╗ ██████╗  ██████╗ ███████╗██████╗  ",
+    "  ██╔══██╗██║     ██║   ██║██╔════╝    ╚══██╔══╝██╔══██╗██║██╔════╝ ██╔════╝ ██╔════╝██╔══██╗ ",
+    "  ██████╔╝██║     ██║   ██║█████╗         ██║   ██████╔╝██║██║  ███╗██║  ███╗█████╗  ██████╔╝ ",
+    "  ██╔══██╗██║     ██║   ██║██╔══╝         ██║   ██╔══██╗██║██║   ██║██║   ██║██╔══╝  ██╔══██╗ ",
+    "  ██████╔╝███████╗╚██████╔╝███████╗       ██║   ██║  ██║██║╚██████╔╝╚██████╔╝███████╗██║  ██║ ",
+    "  ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝       ╚═╝   ╚═╝  ╚═╝╚═╝ ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝ ",
+]
+
+BOOT_FRAMES = [
+    "[ ░░░░░░░░░░░░░░░░░░░░ ]  0%",
+    "[ █░░░░░░░░░░░░░░░░░░░ ]  5%",
+    "[ ██░░░░░░░░░░░░░░░░░░ ] 10%",
+    "[ ████░░░░░░░░░░░░░░░░ ] 20%",
+    "[ ██████░░░░░░░░░░░░░░ ] 30%",
+    "[ █████████░░░░░░░░░░░ ] 45%",
+    "[ ████████████░░░░░░░░ ] 60%",
+    "[ ██████████████░░░░░░ ] 70%",
+    "[ ████████████████░░░░ ] 80%",
+    "[ ██████████████████░░ ] 90%",
+    "[ ████████████████████ ] 100%",
+]
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def typewrite(text, color=Colors.LIGHT_BLUE, delay=0.03):
+    """Typewriter effect"""
+    for char in text:
+        sys.stdout.write(color + char + Colors.RESET)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+
+def glitch_text(text, iterations=3):
+    """Glitch animation on text"""
+    glitch_chars = "!@#$%^&*<>?/\\|~`░▒▓█"
+    for _ in range(iterations):
+        glitched = ""
+        for char in text:
+            if random.random() < 0.3 and char != ' ':
+                glitched += random.choice(glitch_chars)
+            else:
+                glitched += char
+        sys.stdout.write(f"\r{Colors.BRIGHT_BLUE}{glitched}{Colors.RESET}")
+        sys.stdout.flush()
+        time.sleep(0.08)
+    sys.stdout.write(f"\r{Colors.ICE_BLUE}{text}{Colors.RESET}\n")
+    sys.stdout.flush()
+
+def animate_logo():
+    """Animate the logo line by line with glitch effect"""
+    clear()
+    
+    blue_gradient = [
+        '\033[38;5;17m',
+        '\033[38;5;19m',
+        '\033[38;5;21m',
+        '\033[38;5;27m',
+        '\033[38;5;33m',
+        '\033[38;5;39m',
+    ]
+    
+    # Draw logo with gradient
+    for i, line in enumerate(MINI_LOGO):
+        color = blue_gradient[i % len(blue_gradient)]
+        sys.stdout.write(color + line + Colors.RESET + "\n")
+        sys.stdout.flush()
+        time.sleep(0.08)
+    
+    print()
+    
+    # Version/info line with typewriter
+    info = "  [ v1.0 ] [ by Blue Trigger Team ]"
+    typewrite(info, Colors.CYAN_BLUE, 0.02)
+    
+    print()
+    
+    # Boot loading bar
+    print(f"  {Colors.BRIGHT_BLUE}Initializing Blue Trigger...{Colors.RESET}")
+    print()
+    for frame in BOOT_FRAMES:
+        sys.stdout.write(f"\r  {Colors.CYAN_BLUE}{frame}{Colors.RESET}")
+        sys.stdout.flush()
+        time.sleep(0.1)
+    print()
+    print()
+    
+    # Boot messages
+    boot_msgs = [
+        "  [+] Loading modules............",
+        "  [+] Connecting services........",
+        "  [+] Checking configuration.....",
+        "  [+] Initializing UI............",
+        "  [+] Ready!",
+    ]
+    for msg in boot_msgs:
+        typewrite(msg, Colors.LIGHT_BLUE, 0.012)
+        time.sleep(0.1)
+    
+    time.sleep(0.6)
+
+def print_banner():
+    """Print the static banner without animation"""
+    for i, line in enumerate(MINI_LOGO):
+        colors = [
+            '\033[38;5;17m', '\033[38;5;19m', '\033[38;5;21m',
+            '\033[38;5;27m', '\033[38;5;33m', '\033[38;5;39m',
+        ]
+        color = colors[i % len(colors)]
+        print(color + line + Colors.RESET)
+
+def matrix_effect(rows=8, cols=80, duration=1.2):
+    """Mini matrix-style rain in blue"""
+    start = time.time()
+    columns = [random.randint(0, cols-1) for _ in range(15)]
+    chars = "01アイウエオカキクケコサシスセソBLUETRIGGER"
+    
+    while time.time() - start < duration:
+        line = [' '] * cols
+        for col in columns:
+            if col < cols:
+                char = random.choice(chars)
+                color = random.choice([Colors.BRIGHT_BLUE, Colors.ICE_BLUE, Colors.PALE_BLUE, Colors.CYAN_BLUE])
+                line[col] = color + char + Colors.RESET
+        print(''.join(line))
+        columns = [(c + random.randint(-1,2)) % cols for c in columns]
+        time.sleep(0.05)
