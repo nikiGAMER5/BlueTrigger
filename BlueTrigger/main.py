@@ -135,7 +135,7 @@ def show_main_menu():
     print_header(version="1.0", title=title)
     print()
     
-    centered_url("https://github.com/BlueTrigger/blue-trigger-tool")
+    centered_url("https://github.com/nikiGAMER5/BlueTrigger")
     print()
     
     # Show current page tools
